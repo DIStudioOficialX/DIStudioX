@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DI StudioX | Agencia Digital Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --p-blue: #00f2fe; --p-pink: #ff007f; --p-purple: #7000ff;
+            --p-bg-dark: #030712; --p-card-dark: #0f172a; --p-text-dark: #f8fafc;
+            --p-border-dark: #1e293b; --error: #ef4444; --success: #00ff88;
+            --bg-color: var(--p-bg-dark); --card-bg: var(--p-card-dark);
+            --text-main: var(--p-text-dark); --border-color: var(--p-border-dark);
+            --gradient: linear-gradient(135deg, var(--p-blue), var(--p-pink), var(--p-purple));
+            --ease: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        [data-theme="light"] {
+            --bg-color: #f1f5f9; --card-bg: #ffffff; --text-main: #0f172a; --border-color: #cbd5e1;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg-color); color: var(--text-main); margin: 0; transition: 0.4s; overflow-x: hidden; }
+
+        /* --- SPLASH SCREEN --- */
+        #splash { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: 0.8s var(--ease); }
+        #splash.hidden { opacity: 0; visibility: hidden; }
+        .splash-logo { width: 130px; animation: pulse 2s infinite var(--ease); }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 20px var(--p-blue)); } }
+
+        /* --- NAV --- */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 12px 5%; position: fixed; width: 100%; top: 0; z-index: 1000; backdrop-filter: blur(15px); background: rgba(3,7,18,0.7); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .logo-nav { height: 38px; cursor: pointer; transition: 0.3s; }
+        .nav-controls { display: flex; gap: 15px; }
+        .icon-btn { background: none; border: none; color: var(--text-main); font-size: 1.2rem; cursor: pointer; transition: 0.3s; }
+
+        /* --- HERO --- */
+        main { padding: 120px 5% 40px; max-width: 850px; margin: 0 auto; text-align: center; }
+        h1 { font-size: clamp(2rem, 8vw, 3.2rem); font-weight: 900; line-height: 1.1; margin-bottom: 25px; }
+        .gradient-text { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* --- FORM CARD --- */
+        .card { background: var(--card-bg); padding: 35px; border-radius: 28px; border: 1px solid var(--border-color); box-shadow: 0 25px 50px rgba(0,0,0,0.4); text-align: left; position: relative; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .full { grid-column: span 2; }
+        label { display: block; margin-bottom: 8px; font-size: 0.75rem; font-weight: 700; color: var(--p-pink); text-transform: uppercase; }
+        input, textarea, select { width: 100%; padding: 15px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 14px; color: #fff; font-family: inherit; transition: 0.3s; }
+        [data-theme="light"] input, [data-theme="light"] textarea, [data-theme="light"] select { background: #f8fafc; color: #000; }
+        
+        /* FILE ZONE */
+        .file-zone { border: 2px dashed var(--border-color); padding: 25px; border-radius: 16px; text-align: center; cursor: pointer; transition: 0.3s; position: relative; background: rgba(255,255,255,0.02); }
+        .file-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+        #file-info { margin-top: 10px; font-weight: 600; color: var(--p-blue); font-size: 0.85rem; }
+        .warning-size { color: var(--error); font-size: 0.75rem; font-weight: 700; margin-top: 10px; display: none; }
+
+        /* BUTTONS */
+        .btn-submit { width: 100%; padding: 20px; background: var(--gradient); border: none; border-radius: 18px; color: #000; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-top: 20px; transition: 0.3s; font-size: 1rem; }
+        .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0,242,254,0.3); }
+        .btn-submit:disabled { opacity: 0.4; filter: grayscale(1); }
+
+        /* --- SOCIAL BAR (VISÍTANOS EN...) --- */
+        .social-bar { margin-top: 60px; padding: 20px; }
+        .social-title { font-size: 0.8rem; font-weight: 700; color: var(--text-main); opacity: 0.6; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
+        .social-icons { display: flex; justify-content: center; gap: 25px; }
+        .social-item { font-size: 1.6rem; color: var(--text-main); transition: 0.4s var(--ease); text-decoration: none; position: relative; }
+        .social-item:hover { transform: translateY(-5px) scale(1.2); }
+        .social-item.ig:hover { color: #E1306C; filter: drop-shadow(0 0 10px #E1306C); }
+        .social-item.x:hover { color: #fff; filter: drop-shadow(0 0 10px #fff); }
+        .social-item.yt:hover { color: #FF0000; filter: drop-shadow(0 0 10px #FF0000); }
+        .social-item.fb:hover { color: #1877F2; filter: drop-shadow(0 0 10px #1877F2); }
+
+        /* MODAL */
+        #modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 450px; background: var(--card-bg); padding: 35px; border-radius: 30px; border: 1px solid var(--p-purple); z-index: 2000; visibility: hidden; opacity: 0; transition: 0.4s; }
+        #modal.active { visibility: visible; opacity: 1; }
+        #overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 1500; display: none; }
+
+        footer { padding: 50px 5% 80px; text-align: center; opacity: 0.8; }
+        .footer-pro { color: var(--p-pink); font-size: 0.7rem; font-weight: 800; letter-spacing: 3px; margin-top: 10px; }
+
+        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .full { grid-column: span 1; } }
+    </style>
+</head>
+<body>
+
+    <div id="splash">
+        <img src="https://i.ibb.co/Xz9kH2D/logo-azul.png" class="splash-logo">
+    </div>
+
+    <nav>
+        <img src="https://i.ibb.co/L9H8b4y/logo-principal.png" class="logo-nav" onclick="location.reload()">
+        <div class="nav-controls">
+            <button class="icon-btn" id="lang-btn"><i class="fas fa-language"></i></button>
+            <button class="icon-btn" id="theme-btn"><i class="fas fa-moon"></i></button>
+        </div>
+    </nav>
+
+    <main>
+        <div style="margin-bottom: 10px; font-weight: 700; color: var(--p-blue); font-size: 0.75rem; letter-spacing: 2px;">DI STUDIOX - OFFICIAL APP</div>
+        <h1><span id="t-1">Lleva tu marca al</span> <br><span class="gradient-text" id="t-2">Siguiente Nivel</span></h1>
+
+        <div class="card">
+            <form id="proForm" action="https://formspree.io/f/mkoqopjp" method="POST" enctype="multipart/form-data">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label id="l-name">Nombre / Empresa</label>
+                        <input type="text" name="nombre" placeholder="Ej: Alex Smith" required>
+                    </div>
+                    <div class="form-group">
+                        <label id="l-email">Tu Gmail</label>
+                        <input type="email" name="email" placeholder="ejemplo@gmail.com" required>
+                    </div>
+                    <div class="form-group full">
+                        <label id="l-service">Catálogo de Servicios</label>
+                        <select name="servicio">
+                            <option value="Logo">🎨 Edición y Diseño de Logos (Estrella)</option>
+                            <option value="Web">🌐 Desarrollo Web Profesional</option>
+                            <option value="Trad">📖 Traducción Profesional</option>
+                            <option value="Design">📊 Diseño Gráfico y Portafolios</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label id="l-date">Plazo deseado</label>
+                        <input type="date" name="plazo" required>
+                    </div>
+                    <div class="form-group">
+                        <label id="l-price">Tu Oferta (€)</label>
+                        <input type="number" name="oferta" placeholder="Ej: 200" required>
+                    </div>
+                    <div class="form-group full">
+                        <label id="l-desc">Detalles del Proyecto</label>
+                        <textarea name="mensaje" rows="4" placeholder="¿Qué tienes en mente?" required></textarea>
+                    </div>
+                    
+                    <div class="form-group full">
+                        <label id="l-files">Archivos (Max 10MB total)</label>
+                        <div class="file-zone">
+                            <i class="fas fa-folder-open" style="font-size: 2rem; color: var(--p-blue); margin-bottom: 8px;"></i>
+                            <p id="f-msg" style="margin: 0; font-size: 0.9rem;">Sube tus referencias aquí</p>
+                            <input type="file" name="adjuntos" class="file-input" id="file-input" multiple>
+                            <div id="file-info"></div>
+                            <div class="warning-size" id="size-warning">¡Exceso de peso! Límite 10MB</div>
+                        </div>
+                        <p style="text-align: center; margin-top: 10px;">
+                            <a href="https://wetransfer.com" target="_blank" style="color: var(--p-pink); font-size: 0.75rem; text-decoration: none; font-weight: 700;">+ ENVIAR ARCHIVOS PESADOS (+10MB)</a>
+                        </p>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit" id="sub-btn">ENVIAR A DI STUDIOX</button>
+            </form>
+        </div>
+
+        <div class="social-bar">
+            <div class="social-title" id="soc-title">También puedes visitarnos en...</div>
+            <div class="social-icons">
+                <a href="https://www.instagram.com/distudiooficialx?igsh=dGR3dXMzdWNvaDV0" target="_blank" class="social-item ig">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://x.com/DIStudioOficial" target="_blank" class="social-item x">
+                    <i class="fab fa-x-twitter"></i>
+                </a>
+                <a href="https://www.youtube.com/@DIStudioOficialX" target="_blank" class="social-item yt">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61583573461352" target="_blank" class="social-item fb">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <div id="overlay"></div>
+    <div id="modal">
+        <h2 class="gradient-text" style="margin-top: 0;" id="m-title">¿Cómo funciona?</h2>
+        <p style="color: #aaa; font-size: 0.9rem; line-height: 1.6;" id="m-text">
+            1. Dinos tu nombre y gmail.<br>
+            2. Elige el servicio y tu oferta.<br>
+            3. Adjunta archivos de referencia (Max 10MB).<br>
+            4. Espera nuestra respuesta en tu email.
+        </p>
+        <button class="btn-submit" onclick="closeModal()">¡EMPEZAR AHORA!</button>
+    </div>
+
+    <footer>
+        <div style="font-weight: 900; font-size: 1.2rem;" id="f-thanks">¡Gracias por confiar en DI StudioX!</div>
+        <div style="font-size: 0.8rem; margin: 10px 0; opacity: 0.6;">distudiooficialx@gmail.com</div>
+        <div class="footer-pro" id="f-pro">HECHO POR PROFESIONALES</div>
+    </footer>
+
+    <script>
+        // Splash Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('splash').classList.add('hidden');
+                if(!localStorage.getItem('visited_x')) {
+                    document.getElementById('modal').classList.add('active');
+                    document.getElementById('overlay').style.display = 'block';
+                    localStorage.setItem('visited_x', 'true');
+                }
+            }, 2500);
+        });
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        // Theme Toggle
+        document.getElementById('theme-btn').onclick = () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            document.documentElement.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+        };
+
+        // Idioma Simple
+        let lang = 'es';
+        const trans = {
+            es: { t1: "Lleva tu marca al", t2: "Siguiente Nivel", sub: "ENVIAR A DI STUDIOX", soc: "También puedes visitarnos en..." },
+            en: { t1: "Take your brand to the", t2: "Next Level", sub: "SEND TO DI STUDIOX", soc: "You can also visit us at..." }
+        };
+        document.getElementById('lang-btn').onclick = () => {
+            lang = lang === 'es' ? 'en' : 'es';
+            document.getElementById('t-1').innerText = trans[lang].t1;
+            document.getElementById('t-2').innerText = trans[lang].t2;
+            document.getElementById('sub-btn').innerText = trans[lang].sub;
+            document.getElementById('soc-title').innerText = trans[lang].soc;
+        };
+
+        // Validación 10MB
+        const fInput = document.getElementById('file-input');
+        const fInfo = document.getElementById('file-info');
+        const warn = document.getElementById('size-warning');
+        const sBtn = document.getElementById('sub-btn');
+
+        fInput.onchange = () => {
+            let total = 0;
+            for(let f of fInput.files) total += f.size;
+            if(total > 10 * 1024 * 1024) {
+                warn.style.display = 'block';
+                sBtn.disabled = true;
+                fInfo.innerText = (total / (1024*1024)).toFixed(2) + " MB";
+            } else {
+                warn.style.display = 'none';
+                sBtn.disabled = false;
+                fInfo.innerText = fInput.files.length > 0 ? fInput.files.length + " archivos listos" : "";
+            }
+        };
+
+        // Envío AJAX
+        const form = document.getElementById('proForm');
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            sBtn.disabled = true; sBtn.innerText = "...";
+            const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
+            if(res.ok) {
+                alert("¡Enviado! Revisaremos distudiooficialx@gmail.com.");
+                form.reset();
+                fInfo.innerText = "";
+            } else {
+                alert("Error al enviar.");
+            }
+            sBtn.disabled = false; sBtn.innerText = trans[lang].sub;
+        };
+    </script>
+</body>
+</html>
