@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DI StudioX | Global Elite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --p-blue: #00f2fe; --p-pink: #ff007f; --p-purple: #7000ff;
+            --bg: #010409; --card: rgba(13, 17, 23, 0.95);
+            --text: #ffffff; --border: rgba(255, 255, 255, 0.1);
+            --gradient: linear-gradient(135deg, var(--p-blue), var(--p-pink), var(--p-purple));
+        }
+
+        /* MODO CLARO */
+        [data-theme="light"] {
+            --bg: #f0f2f5; --card: #ffffff; --text: #1a1a1a;
+            --border: rgba(0, 0, 0, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; transition: background 0.3s, color 0.3s; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; scroll-behavior: smooth; min-height: 100vh; }
+
+        /* SPLASH FULL SCREEN */
+        #splash { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.8s; }
+        #splash.hidden { opacity: 0; visibility: hidden; transform: scale(1.1); pointer-events: none; }
+
+        /* LOGO CÓDIGO */
+        .logo-box { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .logo-symbol { background: var(--gradient); padding: 5px 10px; border-radius: 8px; font-weight: 900; color: #000; }
+        .logo-text { font-weight: 900; font-size: 1.4rem; color: var(--text); }
+        .logo-text span { color: var(--p-pink); font-style: italic; }
+
+        /* NAV & AJUSTES */
+        nav { position: fixed; top: 0; width: 100%; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(20px); background: rgba(var(--bg), 0.8); border-bottom: 1px solid var(--border); z-index: 1000; }
+        .nav-tools { display: flex; gap: 15px; align-items: center; }
+        .settings-btn { cursor: pointer; font-size: 1.2rem; color: var(--p-blue); }
+
+        /* PANEL AJUSTES */
+        #settings-panel { position: fixed; top: 80px; right: 5%; background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid var(--border); display: none; z-index: 2000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 280px; }
+        #settings-panel.active { display: block; animation: fadeIn 0.3s; }
+
+        /* BOTÓN VOLVER */
+        #back-btn { position: fixed; bottom: 85px; right: 25px; width: 50px; height: 50px; background: var(--card); border: 2px solid var(--p-blue); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--p-blue); cursor: pointer; z-index: 2000; opacity: 0; pointer-events: none; }
+        #back-btn.visible { opacity: 1; pointer-events: auto; }
+
+        main { padding: 110px 5% 40px; max-width: 800px; margin: 0 auto; }
+        .card { background: var(--card); border-radius: 30px; padding: 35px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.2); margin-bottom: 30px; }
+        
+        label { color: var(--p-blue); font-size: 0.75rem; font-weight: 900; display: block; margin: 20px 0 8px; text-transform: uppercase; }
+        input, select, textarea { width: 100%; padding: 15px; background: rgba(128,128,128,0.1); border: 1px solid var(--border); border-radius: 12px; color: var(--text); outline: none; }
+
+        .btn-main { width: 100%; padding: 20px; background: var(--gradient); border: none; border-radius: 15px; font-weight: 900; color: #000; cursor: pointer; text-transform: uppercase; margin-top: 20px; }
+
+        /* FOOTER */
+        footer { padding: 40px 0; text-align: center; border-top: 1px solid var(--border); }
+        .footer-socials { display: flex; justify-content: center; gap: 25px; margin-bottom: 15px; }
+        .footer-socials a { font-size: 2rem; color: var(--text); opacity: 0.7; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div id="splash">
+        <div class="logo-box" style="transform: scale(1.5);">
+            <div class="logo-symbol">DI</div><div class="logo-text">Studio<span>X</span></div>
+        </div>
+        <p style="color: white; margin-top: 20px; font-weight: 900; letter-spacing: 3px; font-size: 0.7rem;">CARGANDO ECOSISTEMA...</p>
+    </div>
+
+    <nav>
+        <div class="logo-box" onclick="location.reload()">
+            <div class="logo-symbol">DI</div><div class="logo-text">Studio<span>X</span></div>
+        </div>
+        <div class="nav-tools">
+            <i class="fas fa-cog settings-btn" onclick="toggleSettings()"></i>
+        </div>
+    </nav>
+
+    <div id="settings-panel">
+        <h3 style="margin-bottom: 15px; font-size: 1rem;">Configuración Global</h3>
+        
+        <label>Idioma del Sistema</label>
+        <select id="language-select">
+            </select>
+
+        <label>Apariencia</label>
+        <button onclick="toggleTheme()" class="btn-main" style="padding: 10px; font-size: 0.8rem; background: var(--border); color: var(--text);">
+            <i class="fas fa-adjust"></i> Cambiar Modo
+        </button>
+    </div>
+
+    <div id="back-btn" onclick="window.scrollTo({top:0, behavior:'smooth'})"><i class="fas fa-arrow-up"></i></div>
+
+    <main>
+        <div id="form-view">
+            <h1 style="text-align:center; font-size: 3rem; margin-bottom: 40px; line-height: 1;">Digital<br><span style="background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">StudioX</span></h1>
+            
+            <div class="card">
+                <form id="proForm" action="https://formspree.io/f/mkoqopjp" method="POST" enctype="multipart/form-data">
+                    <label>Nombre</label>
+                    <input type="text" name="nombre" required>
+                    
+                    <label>Servicio Pro (Nuevo: Traducción)</label>
+                    <select name="servicio">
+                        <option>Diseño Logo Premium</option>
+                        <option>Desarrollo Web Master</option>
+                        <option>Traducción Profesional (ESP ↔ ENG)</option>
+                        <option>Edición de Video</option>
+                    </select>
+
+                    <label>Detalles</label>
+                    <textarea name="mensaje" rows="4" required></textarea>
+
+                    <label>Adjuntar Material</label>
+                    <input type="file" name="archivo" multiple>
+
+                    <button type="submit" class="btn-main">Enviar Ahora</button>
+                </form>
+            </div>
+
+            <section>
+                <h2 style="margin-bottom: 20px;">Comunidad <span style="color: var(--p-pink);">Live</span></h2>
+                <div class="card" style="padding: 20px;">
+                    <textarea id="forum-input" placeholder="Escribe aquí..."></textarea>
+                    <button class="btn-main" style="width: auto; padding: 10px 20px;" onclick="postToForum()">Publicar</button>
+                </div>
+                <div id="forum-feed"></div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-socials">
+            <a href="https://x.com/DIStudioOficial" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://www.instagram.com/distudiooficialx" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com/profile.php?id=61583573461352" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.youtube.com/@DIStudioOficialX" target="_blank"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p style="font-size: 0.7rem; opacity: 0.5;">© 2026 DI STUDIOX INFINITY</p>
+    </footer>
+
+    <script>
+        const languages = ["Afrikáans", "Albanés", "Alemán", "Amhárico", "Árabe", "Armenio", "Azerí", "Bengalí", "Bielorruso", "Birmano", "Bosnio", "Búlgaro", "Canarés", "Catalán", "Cebuano", "Checo", "Chichewa", "Chino", "Cingalés", "Coreano", "Corso", "Criollo haitiano", "Croata", "Danés", "Eslovaco", "Esloveno", "Español", "Esperanto", "Estonio", "Euskera", "Finlandés", "Francés", "Frisón", "Gaelico escocés", "Galés", "Gallego", "Georgiano", "Griego", "Gujarati", "Hausa", "Hawaiano", "Hebreo", "Hindi", "Hmong", "Húngaro", "Igbo", "Indonesio", "Inglés", "Irlandés", "Islandés", "Italiano", "Japonés", "Javanés", "Jemer", "Kazajo", "Kirguís", "Kurdo", "Lao", "Latín", "Letón", "Lituano", "Luxemburgués", "Macedonio", "Malayalam", "Malayo", "Malgache", "Maltés", "Maorí", "Marathi", "Mongol", "Neerlandés", "Nepalí", "Noruego", "Panyabí", "Pastún", "Persa", "Polaco", "Portugués", "Rumano", "Ruso", "Samoano", "Serbio", "Sesotho", "Shona", "Sindhi", "Somali", "Suajili", "Sueco", "Sundanés", "Tagalo", "Tailandés", "Tamil", "Tártaro", "Tayiko", "Telugu", "Turco", "Turcomano", "Ucraniano", "Urdu", "Uigur", "Uzbeko", "Vietnamita", "Xhosa", "Yidis", "Yoruba", "Zulú"];
+
+        window.onload = () => {
+            const select = document.getElementById('language-select');
+            languages.sort().forEach(lang => {
+                const opt = document.createElement('option');
+                opt.value = lang; opt.innerText = lang;
+                if(lang === "Español") opt.selected = true;
+                select.appendChild(opt);
+            });
+            setTimeout(() => document.getElementById('splash').classList.add('hidden'), 1200);
+            renderForum();
+        };
+
+        function toggleSettings() { document.getElementById('settings-panel').classList.toggle('active'); }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+        }
+
+        window.onscroll = () => {
+            document.getElementById('back-btn').classList.toggle('visible', window.scrollY > 300);
+        };
+
+        // Lógica de Foro simplificada para el ejemplo
+        function postToForum() {
+            const input = document.getElementById('forum-input');
+            if(input.value.length < 2) return;
+            const posts = JSON.parse(localStorage.getItem('di_posts') || '[]');
+            posts.unshift({ id: Date.now(), user: "User", text: input.value, likes: 0 });
+            localStorage.setItem('di_posts', JSON.stringify(posts));
+            input.value = ""; renderForum();
+        }
+
+        function renderForum() {
+            const feed = document.getElementById('forum-feed');
+            const posts = JSON.parse(localStorage.getItem('di_posts') || '[]');
+            feed.innerHTML = posts.map(p => `
+                <div class="card" style="padding: 20px; border-left: 4px solid var(--p-blue);">
+                    <p style="font-size: 0.8rem; color: var(--p-blue); font-weight: 900; margin-bottom: 10px;">@User</p>
+                    <p>${p.text}</p>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
