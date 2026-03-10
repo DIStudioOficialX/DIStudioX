@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DIStudioX | Elite Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'es', autoDisplay: false}, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <style>
+        :root {
+            --p-blue: #00f2fe; --p-pink: #ff007f; --p-purple: #7000ff;
+            --bg: #010409; --card: rgba(13, 17, 23, 0.95);
+            --text: #ffffff; --border: rgba(255, 255, 255, 0.1);
+            --gradient: linear-gradient(135deg, var(--p-blue), var(--p-pink), var(--p-purple));
+        }
+        [data-theme="light"] {
+            --bg: #f0f2f5; --card: #ffffff; --text: #1a1a1a; --border: rgba(0, 0, 0, 0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; transition: 0.3s; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+        
+        /* SPLASH DE CARGA */
+        #splash { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; }
+        #splash.hidden { opacity: 0; visibility: hidden; transition: 0.8s; }
+
+        /* HEADER / NAV */
+        nav { position: fixed; top: 0; width: 100%; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(20px); background: rgba(var(--bg), 0.8); border-bottom: 1px solid var(--border); z-index: 1000; }
+        .logo-box { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .logo-symbol { background: var(--gradient); padding: 5px 12px; border-radius: 10px; font-weight: 900; color: #000; }
+        
+        /* CONTENIDO PRINCIPAL */
+        main { padding: 120px 5% 40px; max-width: 800px; margin: 0 auto; }
+        .hero-title { text-align: center; font-size: 3.5rem; font-weight: 900; margin-bottom: 5px; }
+        .hero-subtitle { text-align: center; opacity: 0.5; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 40px; }
+        
+        .card { background: var(--card); border-radius: 30px; padding: 35px; border: 1px solid var(--border); margin-bottom: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        
+        label { color: var(--p-blue); font-size: 0.8rem; font-weight: 900; display: block; margin: 20px 0 8px; text-transform: uppercase; }
+        input, select, textarea { width: 100%; padding: 16px; background: rgba(128,128,128,0.1); border: 1px solid var(--border); border-radius: 14px; color: var(--text); font-size: 1rem; outline: none; }
+        
+        .btn-main { width: 100%; padding: 20px; background: var(--gradient); border: none; border-radius: 18px; font-weight: 900; color: #000; cursor: pointer; text-transform: uppercase; margin-top: 25px; font-size: 1rem; }
+        .btn-main:hover { transform: scale(1.02); filter: brightness(1.1); }
+
+        /* FORO / COMUNIDAD */
+        .post { border-bottom: 1px solid var(--border); padding: 20px 0; animation: slideIn 0.4s ease-out; }
+        .post-user { font-weight: 900; color: var(--p-pink); font-size: 0.9rem; margin-bottom: 5px; display: block; }
+        .post-actions { display: flex; justify-content: flex-end; margin-top: 10px; }
+        .like-btn { cursor: pointer; color: #666; font-weight: 900; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .like-btn.active { color: var(--p-pink); }
+        
+        /* AJUSTES */
+        #settings-panel { position: fixed; top: 80px; right: 5%; background: var(--card); padding: 25px; border-radius: 24px; border: 1px solid var(--border); display: none; z-index: 2000; width: 280px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        #settings-panel.active { display: block; }
+        
+        #google_translate_element { display: none; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* FOOTER SOCIAL */
+        footer { text-align: center; padding: 40px 0; border-top: 1px solid var(--border); margin-top: 50px; }
+        .social-icons { display: flex; justify-content: center; gap: 25px; margin-bottom: 15px; }
+        .social-icons a { color: var(--text); font-size: 1.5rem; opacity: 0.6; }
+        .social-icons a:hover { opacity: 1; color: var(--p-blue); }
+    </style>
+</head>
+<body>
+
+    <div id="google_translate_element"></div>
+
+    <div id="splash">
+        <div class="logo-box" style="transform: scale(2);">
+            <div class="logo-symbol">DI</div>
+            <div style="font-weight:900; font-size:1.5rem; color:#fff;">Studio<span style="color:var(--p-pink)">X</span></div>
+        </div>
+    </div>
+
+    <nav>
+        <div class="logo-box" onclick="location.reload()">
+            <div class="logo-symbol">DI</div>
+            <div style="font-weight:900; font-size:1.5rem; color:var(--text);">Studio<span style="color:var(--p-pink)">X</span></div>
+        </div>
+        <i class="fas fa-cog" style="cursor:pointer; color:var(--p-blue); font-size: 1.5rem;" onclick="document.getElementById('settings-panel').classList.toggle('active')"></i>
+    </nav>
+
+    <div id="settings-panel">
+        <label>Idioma Universal</label>
+        <select id="lang-select" onchange="translatePage(this.value)"></select>
+        <label>Apariencia</label>
+        <button onclick="toggleTheme()" class="btn-main" style="padding:10px; font-size:0.8rem; background:var(--border); color:var(--text); margin-top:5px;">Cambiar Modo</button>
+    </div>
+
+    <main>
+        <h1 class="hero-title">DIStudioX</h1>
+        <p class="hero-subtitle">ELITE ENGINE © 2026</p>
+
+        <div class="card">
+            <form action="https://formspree.io/f/mkoqopjp" method="POST" enctype="multipart/form-data">
+                <label>Tu Identificación / Nombre</label>
+                <input type="text" name="nombre" id="mainUserName" placeholder="Nombre completo" required>
+
+                <label>Email (Gmail recomendado)</label>
+                <input type="email" name="email" placeholder="usuario@gmail.com" required>
+
+                <label>Servicio Pro</label>
+                <select name="servicio">
+                    <option>Diseño Logo Premium</option>
+                    <option>Portafolio Pro / CV Creativo</option>
+                    <option>Desarrollo Web Master</option>
+                    <option>Traducción Profesional</option>
+                    <option>Edición de Video Elite</option>
+                </select>
+
+                <label>Tu Oferta Económica (€)</label>
+                <input type="number" name="oferta" placeholder="¿Cuánto ofreces por este trabajo?" required>
+
+                <label>Detalles del Proyecto</label>
+                <textarea name="mensaje" rows="4" placeholder="Describe tu visión..." required></textarea>
+
+                <label>Material de Referencia (Adjuntar)</label>
+                <input type="file" name="archivo" multiple>
+
+                <button type="submit" class="btn-main">Lanzar Oferta al Equipo</button>
+            </form>
+        </div>
+
+        <section id="comunidad">
+            <h2 style="margin-bottom:20px; font-weight:900; display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-users" style="color:var(--p-pink)"></i> Comunidad Live
+            </h2>
+            <div class="card" style="padding:25px;">
+                <textarea id="forum-input" placeholder="Escribe un comentario o duda..."></textarea>
+                <button class="btn-main" style="width:auto; padding:12px 30px; margin-top:15px;" onclick="addPost()">Publicar</button>
+            </div>
+            <div id="forum-feed">
+                </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p style="font-size:0.7rem; opacity:0.4; font-weight:900;">© 2026 DISTUDIOX INFINITY | ALL RIGHTS RESERVED</p>
+    </footer>
+
+    <script>
+        const langMap = {"Español":"es", "Inglés":"en", "Francés":"fr", "Alemán":"de", "Italiano":"it", "Portugués":"pt", "Ruso":"ru", "Chino":"zh-CN", "Japonés":"ja"};
+
+        window.onload = () => {
+            const sel = document.getElementById('lang-select');
+            Object.keys(langMap).forEach(l => {
+                let opt = document.createElement('option');
+                opt.value = langMap[l]; opt.innerText = l;
+                sel.appendChild(opt);
+            });
+            setTimeout(() => document.getElementById('splash').classList.add('hidden'), 1500);
+            renderPosts();
+        };
+
+        function translatePage(code) {
+            const gCombo = document.querySelector('.goog-te-combo');
+            if(gCombo) { gCombo.value = code; gCombo.dispatchEvent(new Event('change')); }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        }
+
+        // LÓGICA DE FORO CON NOMBRE Y LIKES
+        function addPost() {
+            const text = document.getElementById('forum-input').value;
+            const name = document.getElementById('mainUserName').value || "Cliente_X";
+            if(!text) return;
+
+            const posts = JSON.parse(localStorage.getItem('di_final_posts') || '[]');
+            posts.unshift({
+                id: Date.now(),
+                user: name,
+                content: text,
+                likes: 0,
+                liked: false
+            });
+            localStorage.setItem('di_final_posts', JSON.stringify(posts));
+            document.getElementById('forum-input').value = "";
+            renderPosts();
+        }
+
+        function toggleLike(id) {
+            let posts = JSON.parse(localStorage.getItem('di_final_posts') || '[]');
+            const p = posts.find(x => x.id === id);
+            if(p) {
+                p.liked = !p.liked;
+                p.likes += p.liked ? 1 : -1;
+                localStorage.setItem('di_final_posts', JSON.stringify(posts));
+                renderPosts();
+            }
+        }
+
+        function renderPosts() {
+            const feed = document.getElementById('forum-feed');
+            const posts = JSON.parse(localStorage.getItem('di_final_posts') || '[]');
+            if(posts.length === 0) {
+                feed.innerHTML = "<div class='card' style='text-align:center; opacity:0.5;'>No hay mensajes en el feed.</div>";
+                return;
+            }
+            feed.innerHTML = posts.map(p => `
+                <div class="card" style="padding:20px; margin-bottom:15px;">
+                    <span class="post-user">@${p.user}</span>
+                    <p style="margin:10px 0; line-height:1.5;">${p.content}</p>
+                    <div class="post-actions">
+                        <div class="like-btn ${p.liked ? 'active' : ''}" onclick="toggleLike(${p.id})">
+                            <i class="${p.liked ? 'fas' : 'far'} fa-heart"></i> <span>${p.likes}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
